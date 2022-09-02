@@ -22,4 +22,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public UserModel save(UserModel user) {
+        return userRepository.save(user);
+    }
+
 }

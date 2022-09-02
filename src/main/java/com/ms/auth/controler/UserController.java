@@ -3,9 +3,8 @@ package com.ms.auth.controler;
 import com.ms.auth.model.UserModel;
 import com.ms.auth.service.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -14,13 +13,21 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final PasswordEncoder encoder;
 
-    public UserController(UserService userService) {
+    public UserController(UserService userService, PasswordEncoder encoder) {
         this.userService = userService;
+        this.encoder = encoder;
     }
 
     @GetMapping("/list-all")
     public ResponseEntity<List<UserModel>> listarTodos() {
         return ResponseEntity.ok(userService.findAll());
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<UserModel> save(@RequestBody UserModel user) {
+        user.setPassword(encoder.encode(user.getPassword()));
+        return ResponseEntity.ok(userService.save(user));
     }
 }
