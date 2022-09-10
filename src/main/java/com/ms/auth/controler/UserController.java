@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @GetMapping("/validate-password")
-    public ResponseEntity<Boolean> validarSenha(@RequestParam String login,
+    public ResponseEntity<Boolean> validatePassword(@RequestParam String login,
                                                 @RequestParam String password) {
 
         Optional<UserModel> optUser = userService.findByLogin(login);

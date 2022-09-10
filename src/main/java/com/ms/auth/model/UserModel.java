@@ -1,5 +1,8 @@
 package com.ms.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +14,7 @@ public class UserModel {
 
     @Column(unique = true)
     private String login;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     public UserModel() {
