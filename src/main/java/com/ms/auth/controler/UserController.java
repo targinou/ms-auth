@@ -1,7 +1,9 @@
 package com.ms.auth.controler;
 
 import com.ms.auth.model.UserModel;
+import com.ms.auth.service.RabbitMqService;
 import com.ms.auth.service.UserService;
+import org.example.dto.EmailDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,10 +18,12 @@ public class UserController {
 
     private final UserService userService;
     private final PasswordEncoder encoder;
+    private final RabbitMqService rabbitMqService;
 
-    public UserController(UserService userService, PasswordEncoder encoder) {
+    public UserController(UserService userService, PasswordEncoder encoder, RabbitMqService rabbitMqService) {
         this.userService = userService;
         this.encoder = encoder;
+        this.rabbitMqService = rabbitMqService;
     }
 
     @GetMapping("/list-all")
@@ -29,8 +33,19 @@ public class UserController {
 
     @PostMapping("/save")
     public ResponseEntity<UserModel> save(@RequestBody UserModel user) {
+
+        EmailDTO emailDTO = new EmailDTO("Emanuel Targino",
+                "emanueltargino1@gmail.com",
+                "emanueltargino16@gmail.com",
+                "Novo usuário",
+                "Login: " + user.getLogin() + "\nSenha: " + user.getPassword());
+
         user.setPassword(encoder.encode(user.getPassword()));
-        return ResponseEntity.ok(userService.save(user));
+        user = userService.save(user);
+
+        this.rabbitMqService.sendMessage("ms.email", emailDTO);
+
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping("/validate-password")
