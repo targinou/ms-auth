@@ -36,11 +36,11 @@ public class UserController {
 
         EmailDTO emailDTO = new EmailDTO("Emanuel Targino",
                 "emanueltargino1@gmail.com",
-                "emanueltargino16@gmail.com",
+                user.getLogin(),
                 "Novo usuário",
                 "Login: " + user.getLogin() + "\nSenha: " + user.getPassword());
 
-        user.setPassword(encoder.encode(user.getPassword()));
+
         user = userService.save(user);
 
         this.rabbitMqService.sendMessage("ms.email", emailDTO);
