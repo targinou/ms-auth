@@ -50,6 +50,13 @@ public class UserService {
             throw new ValidationException("Password must be at least 6 characters.");
         }
 
+        if (user.getName() == null) {
+            throw new ValidationException("Name must be informed.");
+        }
+
+        if (user.getName().length() < 2) {
+            throw new ValidationException("Name must be at least 2 characters.");
+        }
 
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);

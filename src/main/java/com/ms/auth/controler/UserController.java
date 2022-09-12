@@ -38,7 +38,7 @@ public class UserController {
                 "emanueltargino1@gmail.com",
                 user.getLogin(),
                 "Novo usuário",
-                "Login: " + user.getLogin() + "\nSenha: " + user.getPassword());
+                "Caro, "+ user.getName() + ".\n\nSegue o login e senha da sua conta recém registrada. \nLogin: " + user.getLogin() + "\nSenha: " + user.getPassword());
 
 
         user = userService.save(user);

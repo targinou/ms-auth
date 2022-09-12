@@ -3,6 +3,7 @@ package com.ms.auth.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 public class UserModel {
@@ -15,14 +16,16 @@ public class UserModel {
     private String login;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+    private String name;
 
     public UserModel() {
     }
 
-    public UserModel(Integer id, String login, String password) {
+    public UserModel(Integer id, String login, String password, String name) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -48,4 +51,13 @@ public class UserModel {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
 }
